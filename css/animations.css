@@ -1,0 +1,80 @@
+/* Entrada ao scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition:
+    opacity 0.9s var(--ease) var(--d, 0s),
+    transform 0.9s var(--ease) var(--d, 0s);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Entrada do hero (usa translate/scale individuais para não colidir com transform do parallax) */
+.hero__logo {
+  animation: rise 1.2s var(--ease) both;
+}
+.hero__cup {
+  animation:
+    cup-in 1.4s var(--ease) 0.15s backwards,
+    float 7s ease-in-out 1.6s infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 60px;
+    scale: 0.98;
+  }
+}
+@keyframes cup-in {
+  from {
+    opacity: 0;
+    translate: 0 90px;
+    scale: 0.92;
+  }
+}
+@keyframes float {
+  50% {
+    translate: 0 -14px;
+  }
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Parallax: o JS só atualiza --py */
+[data-parallax] {
+  transform: translate3d(0, var(--py, 0px), 0);
+  will-change: transform;
+}
+.hero__cup[data-parallax] {
+  transform: translate3d(-46%, var(--py, 0px), 0);
+}
+@media (max-width: 900px) {
+  .hero__cup[data-parallax] {
+    transform: translate3d(0, var(--py, 0px), 0);
+  }
+}

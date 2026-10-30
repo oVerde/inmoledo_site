@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inmoledo Café · Confeitaria, cafetaria e tabacaria em Moledo</title>
+    <meta
+      name="description"
+      content="Inmoledo Café: confeitaria, cafetaria e tabacaria em Moledo do Minho."
+    />
+    <link rel="stylesheet" href="https://use.typekit.net/avi4rxz.css" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/sections.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header" id="header">
+      <a class="header__logo glass" href="#home" aria-label="Inmoledo, início">
+        <img
+          src="assets/images/icon.png"
+          alt="Inmoledo"
+          class="header__logo-img"
+        />
+      </a>
+      <nav class="header__nav glass" aria-label="Principal">
+        <a href="#home" class="is-active">Home</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#onde">Contactos</a>
+      </nav>
+      <button
+        class="header__lang glass"
+        id="langToggle"
+        aria-label="Mudar idioma"
+      >
+        <b>PT</b>/EN
+      </button>
+      <button
+        class="header__burger glass"
+        id="menuOpen"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="mobileMenu"
+      >
+        <span></span><span></span>
+      </button>
+    </header>
+
+    <!-- Menu mobile -->
+    <div class="menu" id="mobileMenu" aria-hidden="true">
+      <button class="menu__close" id="menuClose">CLOSE</button>
+      <nav class="menu__links">
+        <a href="#home">Home</a><a href="#sobre">Sobre</a
+        ><a href="#onde">Galeria</a><a href="#contactos">Contactos</a>
+      </nav>
+    </div>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero" id="home">
+        <img
+          class="hero__texture"
+          data-parallax="0.12"
+          src="assets/images/texture.png"
+          alt="Insua"
+          width="auto"
+          height="auto"
+        />
+
+        <img
+          class="hero__logo"
+          data-parallax="0.12"
+          src="assets/images/logo.png"
+          alt="Inmoledo Café"
+          width="241"
+          height="60"
+        />
+
+        <img
+          class="hero__cup"
+          data-parallax="-0.08"
+          src="assets/images/hero-cup.png"
+          alt="Copo de café Inmoledo"
+          width="754"
+          height="1042"
+        />
+
+        <div class="hero__about" id="sobre">
+          <a href="#contactos" class="btn btn--dark reveal">Contactar</a>
+          <h1 class="hero__title reveal" style="--d: 0.1s">
+            Um pouco<br />sobre nós!
+          </h1>
+          <p class="hero__text reveal" style="--d: 0.2s">
+            Nós somos uma empresa que oferece serviços como confeitaria,
+            cafetaria e tabacaria. Estamos sediados em Moledo do Minho, à sua
+            espera!
+          </p>
+        </div>
+
+        <ul class="hero__stats">
+          <li class="reveal">
+            <strong>ABERTO</strong><span>Estado atual</span>
+          </li>
+          <li class="reveal" style="--d: 0.1s">
+            <strong
+              ><span data-count="4.8" data-decimals="1">4.8</span> ★</strong
+            ><span>Ratings</span>
+          </li>
+          <li class="reveal" style="--d: 0.2s">
+            <strong><span data-count="340">340</span>+</strong
+            ><span>Avaliações</span>
+          </li>
+        </ul>
+        <span class="hero__fade" aria-hidden="true"></span>
+      </section>
+
+      <!-- Onde -->
+      <section class="where" id="onde">
+        <img
+          class="where__map"
+          data-parallax="0.06"
+          src="assets/images/map.svg"
+          alt=""
+          loading="lazy"
+        />
+        <span class="where__pin" aria-hidden="true">in.</span>
+        <div class="where__content">
+          <h2 class="reveal">Onde nos pode<br />encontrar?</h2>
+          <p class="reveal" style="--d: 0.1s">
+            Estamos no centro de Moledo do Minho, a poucos passos da praia.
+            Passe por cá para um café, um doce da casa ou o seu jornal do dia.
+          </p>
+        </div>
+      </section>
+
+      <!-- Convite -->
+      <section class="invite" id="contactos">
+        <div class="invite__rows" aria-hidden="true">
+          <p data-marquee="-1">
+            Pode comer aqui os seus doces favoritos · Pode comer aqui os seus
+            doces favoritos ·
+          </p>
+          <p data-marquee="1">
+            Pode comer aqui os seus doces favoritos · Pode comer aqui os seus
+            doces favoritos ·
+          </p>
+          <p data-marquee="-1">
+            Pode comer aqui os seus doces favoritos · Pode comer aqui os seus
+            doces favoritos ·
+          </p>
+        </div>
+        <img
+          class="invite__lid"
+          data-spin
+          src="assets/images/lid.png"
+          alt="Tampa do copo Inmoledo"
+          loading="lazy"
+          width="678"
+          height="666"
+        />
+        <div class="invite__cta reveal">
+          <span>Será muito bem-vindo!</span>
+          <a href="mailto:geral@inmoledo.pt" class="btn btn--dark">Contactar</a>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <svg
+        class="footer__wave"
+        viewBox="0 0 1440 220"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M0 0V120C240 200 420 190 640 130 880 65 1080 60 1440 150V220H0Z"
+        />
+      </svg>
+      <div class="footer__inner">
+        <h2 class="footer__title reveal">Obrigado pela<br />sua visita!</h2>
+        <div class="footer__cols">
+          <address class="reveal">
+            <a href="mailto:geral@inmoledo.pt">geral@inmoledo.pt</a>
+            <a href="tel:+351935529547">+351 935529547</a>
+            <a
+              href="https://instagram.com/inmoledo"
+              target="_blank"
+              rel="noopener"
+              >@inmoledo</a
+            >
+          </address>
+          <nav class="reveal" style="--d: 0.1s" aria-label="Rodapé">
+            <a href="#home">home</a><a href="#sobre">sobre</a
+            ><a href="#onde">galeria</a><a href="#contactos">contactos</a>
+          </nav>
+          <a
+            href="mailto:geral@inmoledo.pt"
+            class="btn btn--milky reveal"
+            style="--d: 0.2s"
+            >Contactar</a
+          >
+        </div>
+      </div>
+      <div class="footer__logo" role="img" aria-label="Inmoledo Café"></div>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
