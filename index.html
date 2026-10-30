@@ -9,6 +9,10 @@
       content="Inmoledo Café: confeitaria, cafetaria e tabacaria em Moledo do Minho."
     />
     <link rel="stylesheet" href="https://use.typekit.net/avi4rxz.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css"
+    />
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
@@ -118,13 +122,12 @@
 
       <!-- Onde -->
       <section class="where" id="onde">
-        <img
+        <div
+          id="mapaMoledo"
           class="where__map"
-          data-parallax="0.06"
-          src="assets/images/map.svg"
-          alt=""
-          loading="lazy"
-        />
+          role="img"
+          aria-label="Mapa da localização da Inmoledo Café em Moledo"
+        ></div>
         <span class="where__pin" aria-hidden="true">in.</span>
         <div class="where__content">
           <h2 class="reveal">Onde nos pode<br />encontrar?</h2>
@@ -153,12 +156,10 @@
         </div>
         <img
           class="invite__lid"
-          data-spin
           src="assets/images/lid.png"
-          alt="Tampa do copo Inmoledo"
-          loading="lazy"
-          width="678"
-          height="666"
+          alt="copo"
+          width="auto"
+          height="auto"
         />
         <div class="invite__cta reveal">
           <span>Será muito bem-vindo!</span>
@@ -206,6 +207,8 @@
       </div>
       <div class="footer__logo" role="img" aria-label="Inmoledo Café"></div>
     </footer>
+
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 
     <script type="module" src="js/main.js"></script>
   </body>

@@ -1,0 +1,175 @@
+diff --git a/css/sections.css b/css/sections.css
+index 2c8bbc7..367d7c1 100644
+--- a/css/sections.css
++++ b/css/sections.css
+@@ -97,9 +97,21 @@
+   right: 0;
+   top: 14%;
+   width: min(59%, 850px);
++  aspect-ratio: 850 / 616; /* mesma proporção do map.svg original */
+   height: auto;
+-  mix-blend-mode: multiply;
+-  opacity: 0.95;
++  background: transparent;
++}
++.where__map .maplibregl-canvas {
++  background: transparent;
++}
++.where__map .maplibregl-ctrl-attrib {
++  background: transparent;
++  color: var(--milky);
++  opacity: 0.6;
++  font-size: 10px;
++}
++.where__map .maplibregl-ctrl-attrib a {
++  color: inherit;
+ }
+ .where__pin {
+   position: absolute;
+diff --git a/index.html b/index.html
+index ed82dc4..06d828f 100644
+--- a/index.html
++++ b/index.html
+@@ -9,6 +9,7 @@
+       content="Inmoledo Café: confeitaria, cafetaria e tabacaria em Moledo do Minho."
+     />
+     <link rel="stylesheet" href="https://use.typekit.net/avi4rxz.css" />
++    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+     <link rel="stylesheet" href="css/variables.css" />
+     <link rel="stylesheet" href="css/base.css" />
+     <link rel="stylesheet" href="css/components.css" />
+@@ -118,13 +119,12 @@
+ 
+       <!-- Onde -->
+       <section class="where" id="onde">
+-        <img
++        <div
++          id="mapaMoledo"
+           class="where__map"
+-          data-parallax="0.06"
+-          src="assets/images/map.svg"
+-          alt=""
+-          loading="lazy"
+-        />
++          role="img"
++          aria-label="Mapa da localização da Inmoledo Café em Moledo"
++        ></div>
+         <span class="where__pin" aria-hidden="true">in.</span>
+         <div class="where__content">
+           <h2 class="reveal">Onde nos pode<br />encontrar?</h2>
+@@ -207,6 +207,7 @@
+       <div class="footer__logo" role="img" aria-label="Inmoledo Café"></div>
+     </footer>
+ 
++    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+     <script type="module" src="js/main.js"></script>
+   </body>
+ </html>
+diff --git a/js/main.js b/js/main.js
+index 7378699..6240d0d 100644
+--- a/js/main.js
++++ b/js/main.js
+@@ -3,6 +3,7 @@ import { initReveal } from './modules/reveal.js';
+ import { initScrollEffects } from './modules/scroll-effects.js';
+ import { initCounters } from './modules/counters.js';
+ import { initLang } from './modules/lang.js';
++import { initMap } from './modules/map.js';
+ 
+ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ 
+@@ -10,4 +11,5 @@ initNav();
+ initReveal();
+ initCounters(reduceMotion);
+ initLang();
++initMap();
+ if (!reduceMotion) initScrollEffects();
+diff --git a/js/modules/map.js b/js/modules/map.js
+new file mode 100644
+index 0000000..97fa956
+--- /dev/null
++++ b/js/modules/map.js
+@@ -0,0 +1,84 @@
++/** Mapa vetorial de Moledo (MapLibre + OpenFreeMap): linhas na cor --milky, fundo transparente. */
++const COORDS = [-8.864169241759338, 41.84750830512818]; // [lng, lat]
++
++export function initMap() {
++  const el = document.getElementById('mapaMoledo');
++  const pin = document.querySelector('.where__pin');
++  if (!el || !pin || !window.maplibregl) return;
++
++  const milky =
++    getComputedStyle(document.documentElement).getPropertyValue('--milky').trim() || '#edd99f';
++
++  const line = (id, layer, paint, extra = {}) => ({
++    id,
++    type: 'line',
++    source: 'omt',
++    'source-layer': layer,
++    layout: { 'line-cap': 'round', 'line-join': 'round' },
++    paint: { 'line-color': milky, ...paint },
++    ...extra,
++  });
++
++  const style = {
++    version: 8,
++    sources: { omt: { type: 'vector', url: 'https://tiles.openfreemap.org/planet' } },
++    layers: [
++      // sem layer "background" => fundo transparente
++      line('agua', 'water', { 'line-width': 1.5 }),
++      line('rios', 'waterway', { 'line-width': 1.2 }),
++      line('edificios', 'building', { 'line-width': 0.8, 'line-opacity': 0.6 }, { minzoom: 14 }),
++      line(
++        'estradas',
++        'transportation',
++        {
++          'line-width': [
++            'match', ['get', 'class'],
++            ['motorway', 'trunk', 'primary'], 3,
++            ['secondary', 'tertiary'], 2.2,
++            1.3,
++          ],
++        },
++        { filter: ['!in', 'class', 'rail', 'transit', 'path'] }
++      ),
++      line(
++        'caminhos',
++        'transportation',
++        { 'line-width': 0.8, 'line-dasharray': [2, 2] },
++        { filter: ['==', 'class', 'path'] }
++      ),
++    ],
++  };
++
++  const map = new maplibregl.Map({
++    container: el,
++    style,
++    center: COORDS,
++    zoom: 16,
++    interactive: false,
++    attributionControl: false,
++  });
++
++  map.addControl(
++    new maplibregl.AttributionControl({
++      compact: true,
++      customAttribution:
++        '<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> © <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">OpenMapTiles</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
++    }),
++    'bottom-right'
++  );
++
++  // Faz o centro do pin existente coincidir com as coordenadas, sem tocar no design do pin
++  const align = () => {
++    map.resize();
++    map.jumpTo({ center: COORDS });
++    const p = map.project(COORDS);
++    const m = el.getBoundingClientRect();
++    const r = pin.getBoundingClientRect();
++    map.panBy([p.x - (r.left + r.width / 2 - m.left), p.y - (r.top + r.height / 2 - m.top)], {
++      animate: false,
++    });
++  };
++
++  map.on('load', align);
++  window.addEventListener('resize', align);
++}
